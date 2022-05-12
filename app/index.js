@@ -7,7 +7,7 @@ const message = process.env.MESSAGE || "(No message specified)"
 const otherApp = process.env.OTHER_APP
 
 app.get('/', async (req, res) => {
-  let response = `<div>Message: ${message}</div>`
+  let page = `<div>Message: ${message}</div>`
   if(otherApp)
   {
     try
@@ -17,13 +17,14 @@ app.get('/', async (req, res) => {
         url: `http://${otherApp}/message`
       })
       const otherMessage = otherResponse.data
-      response = `${response}<br><div>Message from other app: ${otherMessage}</div>`
+      page = `${page}<br><div>Message from other app: ${otherMessage}</div>`
     } catch (e)
     {
       console.log(e)
     }
   }
-  res.send(response)
+  page = `<div style="font-size: 30px;">${page}</div>`
+  res.send(page)
 })
 
 app.get('/message', async (req, res) => {

@@ -19,7 +19,6 @@ services:
       - "5001" # This exposes port 5001 inside the virtual network
     environment:
       PORT: 5001
-      OTHER_APP: "open-app:5000"
       MESSAGE: "Hi, I'm closed-app! I can only communicate with other containers inside the same virtual network as me. If you see this message, it's via open-app"
     networks:
       subnet:
