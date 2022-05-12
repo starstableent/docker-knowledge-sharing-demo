@@ -1,0 +1,30 @@
+version: "3.8"
+services:
+  open-app:
+    image: my-express-api
+    ports:
+      - "3000:5000" # "<HOST_PORT>:<CONTAINER_PORT>" This exposes port 5001 inside the virtual network and port forwards it to 3000 on the host computer
+    environment:
+      PORT: 5000
+      OTHER_APP: "closed-app:5001"
+      MESSAGE: "Hi, I'm open-app! I can communicate with other containers inside the same virtual network as me AND with external clients (like you)"
+    networks:
+      subnet:
+        aliases:
+          - open-app
+  
+  closed-app:
+    image: my-express-api
+    expose:
+      - "5001" # This exposes port 5001 inside the virtual network
+    environment:
+      PORT: 5001
+      OTHER_APP: "open-app:5000"
+      MESSAGE: "Hi, I'm closed-app! I can only communicate with other containers inside the same virtual network as me. If you see this message, it's via open-app"
+    networks:
+      subnet:
+        aliases:
+          - closed-app
+
+networks:
+  subnet:
